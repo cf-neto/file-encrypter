@@ -1,6 +1,7 @@
 from cryptography.fernet import Fernet
 import os
 import time
+from tqdm import tqdm
 
 def encrypt_file():
     os.system('cls')
@@ -41,15 +42,12 @@ def encrypt_file():
                 all_files.append(os.path.join(root, filename))
         
         total = len(all_files)
-        for i, file_path in enumerate(all_files, 1):
+        for file_path in tqdm(all_files, desc="Encrypting files", unit="file"):
             with open(file_path, 'rb') as file:
                 encrypted = fernet.encrypt(file.read())
             with open(file_path, 'wb') as file:
                 file.write(encrypted)
             
-            # Mostrar progresso em %
-            print(f"\rEncrypting: {i}/{total} ({(i/total)*100:.1f}%)", end="")
-
         print("\nFolder encrypted successfully!")
 
     time.sleep(0.5)
